@@ -1,4 +1,3 @@
-import React from 'react';
 import { AppBar, Box, Toolbar, Typography, Container } from '@mui/material';
 import AdbIcon from '@mui/icons-material/Adb';
 import { NavLink } from 'react-router-dom';
@@ -53,14 +52,10 @@ const NavBar = () => {
 						COVIDOO
 					</Typography>
 
-					<Box
-					// sx={{
-					//     flexGrow: 1,
-					//     display: { xs: 'none', md: 'flex' }
-					// }}
-					>
+					<Box>
 						{publicPages.map((page) => (
 							<NavLink
+								key={page.route}
 								to={page.route}
 								style={{
 									fontWeight: 700,
@@ -75,6 +70,7 @@ const NavBar = () => {
 						{isAuthenticated &&
 							privatePages.map((page) => (
 								<NavLink
+									key={page.route}
 									to={page.route}
 									style={{
 										fontWeight: 700,
