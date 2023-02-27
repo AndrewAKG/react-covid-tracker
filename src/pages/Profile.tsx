@@ -1,6 +1,12 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Edit, Save } from '@mui/icons-material';
-import { CircularProgress, Grid, IconButton, InputAdornment, TextField } from '@mui/material';
+import {
+	CircularProgress,
+	Grid,
+	IconButton,
+	InputAdornment,
+	TextField
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { usersAuth0ApiUrl } from '../config/auth0';
 
@@ -8,7 +14,7 @@ const Profile = () => {
 	const { user, getAccessTokenSilently, isLoading } = useAuth0();
 	// console.log('USER', user);
 
-	const [name, setName] = useState("");
+	const [name, setName] = useState('');
 	const [isNameInEditMode, setIsNameInEditMode] = useState(false);
 
 	const handleNameEdit = async () => {
@@ -29,7 +35,7 @@ const Profile = () => {
 		} catch (e: any) {
 			console.log(e.message);
 		}
-	}
+	};
 
 	useEffect(() => {
 		const getUserMetadata = async () => {
@@ -39,8 +45,8 @@ const Profile = () => {
 				const userDetailsByIdUrl = `${usersAuth0ApiUrl}/${user?.sub}`;
 				const metadataResponse = await fetch(userDetailsByIdUrl, {
 					headers: {
-						Authorization: `Bearer ${accessToken}`,
-					},
+						Authorization: `Bearer ${accessToken}`
+					}
 				});
 
 				const userDetails = await metadataResponse.json();
@@ -67,15 +73,19 @@ const Profile = () => {
 							readOnly: true,
 							endAdornment: (
 								<InputAdornment position="end">
-									{isLoading ?
-										<CircularProgress /> :
+									{isLoading ? (
+										<CircularProgress />
+									) : (
 										<IconButton
 											aria-label="toggle name to be editable"
-											onClick={() => setIsNameInEditMode(true)}
+											onClick={() =>
+												setIsNameInEditMode(true)
+											}
 											edge="end"
 										>
 											<Edit />
-										</IconButton>}
+										</IconButton>
+									)}
 								</InputAdornment>
 							)
 						}}
@@ -88,7 +98,7 @@ const Profile = () => {
 						autoFocus
 						value={name}
 						label={'Name'}
-						onChange={event => setName(event.target.value)}
+						onChange={(event) => setName(event.target.value)}
 						InputProps={{
 							endAdornment: (
 								<InputAdornment position="end">

@@ -1,7 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
 
-const SignupButton = () => {
+export const SignupButton = () => {
 	const { loginWithRedirect } = useAuth0();
 
 	const handleSignUp = async () => {
@@ -28,5 +28,3 @@ const SignupButton = () => {
 		</Button>
 	);
 };
-
-export default SignupButton;

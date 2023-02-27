@@ -1,9 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import NavBar from './components/common/NavBar';
-import PageLoader from './components/common/PageLoader';
-import AuthenticationGuard from './components/auth/AuthenticationGuard';
+import { AuthenticationGuard, NavBar, PageLoader } from './components';
 import { Grid } from '@mui/material';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -22,29 +20,38 @@ const App = () => {
 	return (
 		<>
 			<NavBar />
-			<div className='App'>
-				<Grid container justifyContent={"center"}>
-					{web && <Grid item xs={3} />}
-					<Grid item xs={web ? 6 : 12} paddingY={7}>
-						<Suspense fallback={<PageLoader />}>
-							<Routes>
-								<Route path="/" element={<Dashboard />} />
-								<Route path="/dashboard" element={<Dashboard />} />
-								<Route
-									path="/profile"
-									element={<AuthenticationGuard component={Profile} />}
-								/>
-								<Route
-									path="/data-input"
-									element={<AuthenticationGuard component={DataInput} />}
-								/>
-								<Route path="*" element={<NoMatch />} />
-							</Routes>
-						</Suspense>
-					</Grid>
-					{web && <Grid item xs={3} />}
+			<Grid container>
+				{web && <Grid item xs={3} />}
+				<Grid
+					item
+					xs={web ? 6 : 12}
+					paddingY={7}
+					style={{ width: '100%', height: '100%' }}
+				>
+					<Suspense fallback={<PageLoader />}>
+						<Routes>
+							<Route path="/" element={<Dashboard />} />
+							<Route path="/dashboard" element={<Dashboard />} />
+							<Route
+								path="/profile"
+								element={
+									<AuthenticationGuard component={Profile} />
+								}
+							/>
+							<Route
+								path="/data-input"
+								element={
+									<AuthenticationGuard
+										component={DataInput}
+									/>
+								}
+							/>
+							<Route path="*" element={<NoMatch />} />
+						</Routes>
+					</Suspense>
 				</Grid>
-			</div>
+				{web && <Grid item xs={3} />}
+			</Grid>
 		</>
 	);
 };

@@ -14,17 +14,15 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-	<React.StrictMode>
-		<ThemeProvider theme={theme}>
-			{/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-			<CssBaseline />
-			<BrowserRouter>
-				<Auth0ProviderWithNavigate>
-					<App />
-				</Auth0ProviderWithNavigate>
-			</BrowserRouter>
-		</ThemeProvider>
-	</React.StrictMode>
+	<ThemeProvider theme={theme}>
+		{/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+		<CssBaseline />
+		<BrowserRouter>
+			<Auth0ProviderWithNavigate>
+				<App />
+			</Auth0ProviderWithNavigate>
+		</BrowserRouter>
+	</ThemeProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

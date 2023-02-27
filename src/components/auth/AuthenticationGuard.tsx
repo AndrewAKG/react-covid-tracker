@@ -1,8 +1,8 @@
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { ComponentType } from 'react';
-import PageLoader from '../common/PageLoader';
+import { PageLoader } from '../common';
 
-const AuthenticationGuard = ({
+export const AuthenticationGuard = ({
 	component
 }: {
 	component: ComponentType<object>;
@@ -13,5 +13,3 @@ const AuthenticationGuard = ({
 
 	return <Component />;
 };
-
-export default AuthenticationGuard;

@@ -2,9 +2,7 @@ import { AppBar, Box, Toolbar, Typography, Container } from '@mui/material';
 import AdbIcon from '@mui/icons-material/Adb';
 import { NavLink } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import LoginButton from '../action-buttons/LoginButton';
-import SignupButton from '../action-buttons/SignUpButton';
-import LogoutButton from '../action-buttons/LogoutButton';
+import { LoginButton, SignupButton, LogoutButton } from '../action-buttons';
 
 const publicPages = [
 	{
@@ -24,7 +22,7 @@ const privatePages = [
 	}
 ];
 
-const NavBar = () => {
+export const NavBar = () => {
 	const { isAuthenticated } = useAuth0();
 
 	return (
@@ -97,5 +95,3 @@ const NavBar = () => {
 		</AppBar>
 	);
 };
-
-export default NavBar;
