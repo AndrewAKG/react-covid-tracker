@@ -7,8 +7,11 @@ import { BrowserRouter } from 'react-router-dom';
 import theme from './theme';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Auth0ProviderWithNavigate } from './components/auth/Auth0ProviderWithNavigate';
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root = ReactDOM.createRoot(
+	document.getElementById('root') as HTMLElement
+);
 
 root.render(
 	<React.StrictMode>
@@ -16,10 +19,11 @@ root.render(
 			{/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
 			<CssBaseline />
 			<BrowserRouter>
-				<App />
+				<Auth0ProviderWithNavigate>
+					<App />
+				</Auth0ProviderWithNavigate>
 			</BrowserRouter>
 		</ThemeProvider>
-		,
 	</React.StrictMode>
 );
 
