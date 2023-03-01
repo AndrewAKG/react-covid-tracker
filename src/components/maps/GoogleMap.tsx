@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import GoogleMapReact, { Props } from 'google-map-react';
+import { googleMapsApiKey } from '../../config';
 
 interface MapProps extends Props {
 	children?: any;
@@ -14,7 +15,7 @@ export const GoogleMap = ({ children, ...props }: MapProps) => (
 	<Wrapper>
 		<GoogleMapReact
 			bootstrapURLKeys={{
-				key: process.env.REACT_APP_MAP_KEY!
+				key: googleMapsApiKey
 			}}
 			{...props}
 		>

@@ -8,7 +8,7 @@ import {
 	TextField
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { usersAuth0ApiUrl } from '../config/auth0';
+import { usersAuth0ApiUrl } from '../config';
 
 const Profile = () => {
 	const { user, getAccessTokenSilently, isLoading } = useAuth0();
@@ -123,7 +123,7 @@ const Profile = () => {
 					InputProps={{
 						readOnly: true
 					}}
-					helperText={'Email is not editable'}
+					disabled={true}
 				/>
 			</Grid>
 		</Grid>

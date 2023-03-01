@@ -33,7 +33,7 @@ const Dashboard = () => {
 				lng: longitude
 			}}
 			yesIWantToUseGoogleMapApiInternals
-		// onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, places)}
+			// onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, places)}
 		>
 			<Marker
 				key={'my place'}
