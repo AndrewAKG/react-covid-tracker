@@ -17,7 +17,7 @@ const DataInput = () => {
 	const setErrorAndHelperText = (error: boolean, text: string) => {
 		setError(error);
 		setHelperText(text);
-	}
+	};
 
 	const validateInput = (input: string) => {
 		if (!input.length) {
@@ -27,20 +27,25 @@ const DataInput = () => {
 
 		if (/^\d+(\.\d{1,2})?$/.test(input)) {
 			setErrorAndHelperText(false, '');
-		}
-		else {
+		} else {
 			setErrorAndHelperText(true, 'invalid temperature format');
 			return;
 		}
 
 		if (Number(input) < 36) {
-			setErrorAndHelperText(true, `temperature must be more than or equal 36${'\u00b0'}`);
+			setErrorAndHelperText(
+				true,
+				`temperature must be more than or equal 36${'\u00b0'}`
+			);
 		} else if (Number(input) > 41) {
-			setErrorAndHelperText(true, `temperature must be less than or equal 41${'\u00b0'}`);
+			setErrorAndHelperText(
+				true,
+				`temperature must be less than or equal 41${'\u00b0'}`
+			);
 		} else {
 			setErrorAndHelperText(false, '');
 		}
-	}
+	};
 
 	useEffect(() => {
 		const getUserInitLocation = async () => {
