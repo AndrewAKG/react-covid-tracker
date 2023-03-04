@@ -1,8 +1,10 @@
 import styled from 'styled-components';
+import { Tooltip, Typography } from '@mui/material';
+import React from 'react';
 
 interface MarkerProps {
-	text: string;
-	onClick?: React.MouseEventHandler<HTMLDivElement>;
+	name: string;
+	temp: number;
 	lat: number;
 	lng: number;
 }
@@ -18,12 +20,19 @@ const Wrapper = styled.div`
 	border-radius: 100%;
 	user-select: none;
 	transform: translate(-50%, -50%);
-	cursor: ${(props) => (props.onClick ? 'pointer' : 'default')};
 	&:hover {
-		z-index: 1;
+		z-index: 10;
+		background-color: #DDD;
 	}
 `;
 
-export const Marker = ({ text, onClick }: MarkerProps) => (
-	<Wrapper onClick={onClick}>{text}</Wrapper>
+export const Marker = ({ name, temp }: MarkerProps) => (
+	<Tooltip title={
+		<React.Fragment>
+			<Typography color="inherit"><strong>Name:</strong> {name}</Typography>
+			<Typography color="inherit"><strong>Temp:</strong> {temp} C{'\u00b0'}</Typography>
+		</React.Fragment>
+	} arrow>
+		<Wrapper />
+	</Tooltip>
 );

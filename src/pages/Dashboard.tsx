@@ -1,24 +1,27 @@
 import { useEffect, useState } from 'react';
 import { PageLoader, GoogleMap, Marker } from '../components';
+import { apiUrl } from '../config';
+import { UserData } from '../types';
 
 const Dashboard = () => {
 	const [isLoading, setIsLoading] = useState(true);
-	const [latitude, setLatitude] = useState<number>(0);
-	const [longitude, setLongitude] = useState<number>(0);
+	const [usersData, setUsersData] = useState<UserData[]>([]);
 
 	useEffect(() => {
-		const getUserLocation = () => {
-			navigator.geolocation.getCurrentPosition(
-				(position) => {
-					setLatitude(position.coords.latitude);
-					setLongitude(position.coords.longitude);
-					setIsLoading(false);
-				},
-				(err) => console.log(err)
-			);
+		const getUsersData = async () => {
+			try {
+				const usersDataResponse = await fetch(`${apiUrl}/users-data`);
+				if (usersDataResponse.ok) {
+					const usersData = await usersDataResponse.json();
+					setUsersData(usersData.data);
+				}
+				setIsLoading(false);
+			} catch (e) {
+				console.log('data error', e);
+			}
 		};
 
-		getUserLocation();
+		getUsersData();
 	}, []);
 
 	if (isLoading) {
@@ -29,18 +32,23 @@ const Dashboard = () => {
 		<GoogleMap
 			defaultZoom={9}
 			defaultCenter={{
-				lat: latitude,
-				lng: longitude
+				lat: 30.0444,
+				lng: 31.2357
 			}}
 			yesIWantToUseGoogleMapApiInternals
-			// onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, places)}
+		// onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, places)}
 		>
-			<Marker
-				key={'my place'}
-				text={'my place'}
-				lat={latitude}
-				lng={longitude}
-			/>
+			{usersData.map((item) => {
+				return (
+					<Marker
+						key={item._id}
+						name={item.username}
+						temp={item.temperature}
+						lat={item.latitude}
+						lng={item.longitude}
+					/>
+				);
+			})}
 		</GoogleMap>
 	);
 };

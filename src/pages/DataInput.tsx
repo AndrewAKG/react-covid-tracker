@@ -1,16 +1,24 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import {
+	Button,
 	CircularProgress,
 	Grid,
 	InputAdornment,
 	TextField
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { apiUrl } from '../config';
 import { getAddressFromCoords, getUserLocation } from '../utils/Maps';
 
 const DataInput = () => {
+	const { getAccessTokenSilently } = useAuth0();
 	const [isLoading, setIsLoading] = useState(true);
+
+	const [latitude, setLatitude] = useState<number>();
+	const [longitude, setLongitude] = useState<number>();
 	const [address, setAddress] = useState('');
 	const [temperature, setTemperature] = useState('');
+
 	const [error, setError] = useState(false);
 	const [helperText, setHelperText] = useState('');
 
@@ -56,14 +64,37 @@ const DataInput = () => {
 					longitude
 				);
 
-				setIsLoading(false);
 				setAddress(userAddress);
+				setLatitude(latitude);
+				setLongitude(longitude);
+				setIsLoading(false);
 			} catch (e) {
 				console.log(e);
 			}
 		};
 		getUserInitLocation();
 	}, []);
+
+	const handleSubmitInputData = async () => {
+		try {
+			const accessToken = await getAccessTokenSilently();
+			await fetch(`${apiUrl}/users-data`, {
+				method: 'POST',
+				body: JSON.stringify({
+					latitude,
+					longitude,
+					address,
+					temperature
+				}),
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+					'Content-Type': 'application/json'
+				}
+			});
+		} catch (e) {
+			console.log(e);
+		}
+	};
 
 	return (
 		<Grid container spacing={3}>
@@ -104,6 +135,11 @@ const DataInput = () => {
 					}}
 					helperText={helperText}
 				/>
+			</Grid>
+			<Grid item>
+				<Button variant="contained" onClick={handleSubmitInputData}>
+					Submit
+				</Button>
 			</Grid>
 		</Grid>
 	);
