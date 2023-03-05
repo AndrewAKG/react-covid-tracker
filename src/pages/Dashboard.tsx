@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
 import { PageLoader, GoogleMap, Marker } from '../components';
 import { apiUrl } from '../config';
-import { UserData } from '../types';
+import { GetAllUsersDataResponse, UserData } from '../types';
 
 const Dashboard = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [usersData, setUsersData] = useState<UserData[]>([]);
 
 	useEffect(() => {
-		const getUsersData = async () => {
+		const getAllUsersData = async () => {
 			try {
 				const usersDataResponse = await fetch(`${apiUrl}/users-data`);
 				if (usersDataResponse.ok) {
-					const usersData = await usersDataResponse.json();
+					const usersData: GetAllUsersDataResponse =
+						await usersDataResponse.json();
 					setUsersData(usersData.data);
 				}
 				setIsLoading(false);
@@ -21,7 +22,7 @@ const Dashboard = () => {
 			}
 		};
 
-		getUsersData();
+		getAllUsersData();
 	}, []);
 
 	if (isLoading) {
@@ -36,7 +37,7 @@ const Dashboard = () => {
 				lng: 31.2357
 			}}
 			yesIWantToUseGoogleMapApiInternals
-		// onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, places)}
+			// onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, places)}
 		>
 			{usersData.map((item) => {
 				return (

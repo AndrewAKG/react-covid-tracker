@@ -22,17 +22,24 @@ const Wrapper = styled.div`
 	transform: translate(-50%, -50%);
 	&:hover {
 		z-index: 10;
-		background-color: #DDD;
+		background-color: #ddd;
 	}
 `;
 
 export const Marker = ({ name, temp }: MarkerProps) => (
-	<Tooltip title={
-		<React.Fragment>
-			<Typography color="inherit"><strong>Name:</strong> {name}</Typography>
-			<Typography color="inherit"><strong>Temp:</strong> {temp} C{'\u00b0'}</Typography>
-		</React.Fragment>
-	} arrow>
+	<Tooltip
+		title={
+			<React.Fragment>
+				<Typography color="inherit">
+					<strong>Name:</strong> {name}
+				</Typography>
+				<Typography color="inherit">
+					<strong>Temp:</strong> {temp} C{'\u00b0'}
+				</Typography>
+			</React.Fragment>
+		}
+		arrow
+	>
 		<Wrapper />
 	</Tooltip>
 );

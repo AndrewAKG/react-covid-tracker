@@ -2,6 +2,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Edit, Save } from '@mui/icons-material';
 import {
 	CircularProgress,
+	Divider,
 	Grid,
 	IconButton,
 	InputAdornment,
@@ -54,8 +55,7 @@ const Profile = () => {
 						longitude
 					);
 					setAddress(userAddress);
-				}
-				else {
+				} else {
 					setAddress('please enable location to get address');
 				}
 
@@ -173,6 +173,9 @@ const Profile = () => {
 						}}
 						disabled={true}
 					/>
+				</Grid>
+				<Grid item xs={12}>
+					<Divider />
 				</Grid>
 			</Grid>
 		</PageWrapper>

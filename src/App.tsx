@@ -12,8 +12,8 @@ const UserVitals = lazy(() => import('./pages/UserVitals'));
 const NoMatch = lazy(() => import('./pages/NoMatch'));
 
 const AppWrapper = styled.div`
-	padding: 10px
-`
+	padding: 10px;
+`;
 
 const App = () => {
 	const { isLoading } = useAuth0();
@@ -37,7 +37,11 @@ const App = () => {
 	}, []);
 
 	if (isLoading) {
-		return <AppWrapper><PageLoader /></AppWrapper>;
+		return (
+			<AppWrapper>
+				<PageLoader />
+			</AppWrapper>
+		);
 	}
 
 	return (
@@ -57,9 +61,7 @@ const App = () => {
 						<Route
 							path="/vitals"
 							element={
-								<AuthenticationGuard
-									component={UserVitals}
-								/>
+								<AuthenticationGuard component={UserVitals} />
 							}
 						/>
 						<Route path="*" element={<NoMatch />} />
