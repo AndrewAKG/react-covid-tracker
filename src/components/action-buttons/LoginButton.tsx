@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { Button } from '@mui/material';
+import { ActionButton } from './ActionButton';
 
 export const LoginButton = () => {
 	const { loginWithRedirect } = useAuth0();
@@ -12,16 +12,5 @@ export const LoginButton = () => {
 		});
 	};
 
-	return (
-		<Button
-			style={{
-				fontWeight: 700,
-				color: 'inherit',
-				textDecoration: 'none'
-			}}
-			onClick={handleLogin}
-		>
-			Log In
-		</Button>
-	);
+	return <ActionButton onClick={handleLogin}>Login</ActionButton>;
 };

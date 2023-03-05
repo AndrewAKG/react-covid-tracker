@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { Button } from '@mui/material';
+import { ActionButton } from './ActionButton';
 
 export const LogoutButton = () => {
 	const { logout } = useAuth0();
@@ -12,16 +12,5 @@ export const LogoutButton = () => {
 		});
 	};
 
-	return (
-		<Button
-			style={{
-				fontWeight: 700,
-				color: 'inherit',
-				textDecoration: 'none'
-			}}
-			onClick={handleLogout}
-		>
-			Log Out
-		</Button>
-	);
+	return <ActionButton onClick={handleLogout}>Logout</ActionButton>;
 };

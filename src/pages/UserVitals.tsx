@@ -1,5 +1,11 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { Button, Divider, Grid, InputAdornment, TextField } from '@mui/material';
+import {
+	Button,
+	Divider,
+	Grid,
+	InputAdornment,
+	TextField
+} from '@mui/material';
 import { apiUrl } from '../config';
 import { useFormik } from 'formik';
 import validationSchema from '../validations/Vitals.validation';
@@ -164,7 +170,8 @@ const UserVitals = () => {
 											(item) => item.temperature
 										),
 										borderColor: 'rgb(53, 162, 235)',
-										backgroundColor: 'rgba(53, 162, 235, 0.5)'
+										backgroundColor:
+											'rgba(53, 162, 235, 0.5)'
 									}
 								]
 							}}
@@ -181,7 +188,7 @@ const UserVitals = () => {
 								),
 								datasets: [
 									{
-										label: "%",
+										label: '%',
 										data: userHistory.map(
 											(item) => item.oxygenLevel
 										),

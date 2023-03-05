@@ -22,6 +22,19 @@ const privatePages = [
 	}
 ];
 
+const baseStyle = {
+	fontWeight: 700,
+	color: 'inherit',
+	textDecoration: 'none',
+	marginRight: 10,
+	marginLeft: 10
+};
+
+const activeStyle = {
+	...baseStyle,
+	color: '#F7C04A'
+};
+
 export const NavBar = () => {
 	const { isAuthenticated } = useAuth0();
 
@@ -55,12 +68,9 @@ export const NavBar = () => {
 							<NavLink
 								key={page.route}
 								to={page.route}
-								style={{
-									fontWeight: 700,
-									color: 'inherit',
-									textDecoration: 'none',
-									marginRight: 10
-								}}
+								style={({ isActive }) =>
+									isActive ? activeStyle : baseStyle
+								}
 							>
 								{page.name}
 							</NavLink>
@@ -70,17 +80,15 @@ export const NavBar = () => {
 								<NavLink
 									key={page.route}
 									to={page.route}
-									style={{
-										fontWeight: 700,
-										color: 'inherit',
-										textDecoration: 'none',
-										marginRight: 10
-									}}
+									style={({ isActive }) =>
+										isActive ? activeStyle : baseStyle
+									}
 								>
 									{page.name}
 								</NavLink>
 							))}
 					</Box>
+					<Box flexGrow={1} />
 					<Box>
 						{!isAuthenticated && (
 							<>

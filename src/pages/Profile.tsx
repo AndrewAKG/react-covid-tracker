@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Edit, Save } from '@mui/icons-material';
+import { Save } from '@mui/icons-material';
 import {
 	CircularProgress,
 	Divider,
@@ -8,19 +9,15 @@ import {
 	InputAdornment,
 	TextField
 } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { PageWrapper } from '../components';
 import { usersAuth0ApiUrl } from '../config';
 import { useLocation } from '../contexts/Location.context';
 import { getAddressFromCoords } from '../utils/Maps';
 
 const Profile = () => {
-	const { user, getAccessTokenSilently, isLoading } = useAuth0();
-	// console.log('USER', user);
+	const { user, getAccessTokenSilently } = useAuth0();
 
 	const [name, setName] = useState('');
-	const [isNameInEditMode, setIsNameInEditMode] = useState(false);
-
 	const [address, setAddress] = useState('');
 	const [isAddressLoading, setIsAddressLoading] = useState(true);
 
@@ -39,8 +36,6 @@ const Profile = () => {
 				},
 				body: JSON.stringify({ user_metadata: { name } })
 			});
-
-			setIsNameInEditMode(false);
 		} catch (e: any) {
 			console.log(e.message);
 		}
@@ -95,58 +90,27 @@ const Profile = () => {
 	return (
 		<PageWrapper>
 			<Grid container spacing={3}>
-				{!isNameInEditMode ? (
-					<Grid item xs={12}>
-						<TextField
-							fullWidth
-							label={'Name'}
-							value={name}
-							InputProps={{
-								readOnly: true,
-								endAdornment: (
-									<InputAdornment position="end">
-										{isLoading ? (
-											<CircularProgress />
-										) : (
-											<IconButton
-												aria-label="toggle name to be editable"
-												onClick={() =>
-													setIsNameInEditMode(true)
-												}
-												edge="end"
-											>
-												<Edit />
-											</IconButton>
-										)}
-									</InputAdornment>
-								)
-							}}
-						/>
-					</Grid>
-				) : (
-					<Grid item xs={12}>
-						<TextField
-							fullWidth
-							autoFocus
-							value={name}
-							label={'Name'}
-							onChange={(event) => setName(event.target.value)}
-							InputProps={{
-								endAdornment: (
-									<InputAdornment position="end">
-										<IconButton
-											aria-label="toggle name to be editable"
-											onClick={handleNameEdit}
-											edge="end"
-										>
-											<Save />
-										</IconButton>
-									</InputAdornment>
-								)
-							}}
-						/>
-					</Grid>
-				)}
+				<Grid item xs={12}>
+					<TextField
+						fullWidth
+						label={'Name'}
+						value={name}
+						onChange={(event) => setName(event.target.value)}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle name to be editable"
+										onClick={handleNameEdit}
+										edge="end"
+									>
+										<Save />
+									</IconButton>
+								</InputAdornment>
+							)
+						}}
+					/>
+				</Grid>
 				<Grid item xs={12}>
 					<TextField
 						fullWidth
