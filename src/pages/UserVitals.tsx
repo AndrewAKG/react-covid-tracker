@@ -9,13 +9,13 @@ import { apiUrl } from '../config';
 import { useFormik } from 'formik';
 import validationSchema from '../validations/Vitals.validation';
 import { useLocation } from '../contexts/Location.context';
+import { PageWrapper } from '../components';
 
 const UserVitals = () => {
 	const { getAccessTokenSilently } = useAuth0();
 	const { latitude, longitude } = useLocation();
 
 	const handleSubmitUserVitals = async (values: { temperature: number, oxygenLevel: number }) => {
-		console.log(values)
 		try {
 			const accessToken = await getAccessTokenSilently();
 			const body = {
@@ -47,46 +47,48 @@ const UserVitals = () => {
 	});
 
 	return (
-		<form onSubmit={formik.handleSubmit}>
-			<Grid container spacing={3}>
-				<Grid item xs={12}>
-					<TextField
-						id='temperature'
-						name='temperature'
-						fullWidth
-						label={'Temperature'}
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="end">
-									C{'\u00b0'}
-								</InputAdornment>
-							)
-						}}
-						value={formik.values.temperature}
-						onChange={formik.handleChange}
-						error={formik.touched.temperature && Boolean(formik.errors.temperature)}
-						helperText={formik.touched.temperature && formik.errors.temperature}
-					/>
+		<PageWrapper>
+			<form onSubmit={formik.handleSubmit}>
+				<Grid container spacing={3}>
+					<Grid item xs={12}>
+						<TextField
+							id='temperature'
+							name='temperature'
+							fullWidth
+							label={'Temperature'}
+							InputProps={{
+								endAdornment: (
+									<InputAdornment position="end">
+										C{'\u00b0'}
+									</InputAdornment>
+								)
+							}}
+							value={formik.values.temperature}
+							onChange={formik.handleChange}
+							error={formik.touched.temperature && Boolean(formik.errors.temperature)}
+							helperText={formik.touched.temperature && formik.errors.temperature}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							id='oxygenLevel'
+							name='oxygenLevel'
+							fullWidth
+							label={'Oxygen Level'}
+							value={formik.values.oxygenLevel}
+							onChange={formik.handleChange}
+							error={formik.touched.oxygenLevel && Boolean(formik.errors.oxygenLevel)}
+							helperText={formik.touched.oxygenLevel && formik.errors.oxygenLevel}
+						/>
+					</Grid>
+					<Grid item>
+						<Button variant="contained" type="submit" disabled={formik.isSubmitting}>
+							Submit
+						</Button>
+					</Grid>
 				</Grid>
-				<Grid item xs={12}>
-					<TextField
-						id='oxygenLevel'
-						name='oxygenLevel'
-						fullWidth
-						label={'Oxygen Level'}
-						value={formik.values.oxygenLevel}
-						onChange={formik.handleChange}
-						error={formik.touched.oxygenLevel && Boolean(formik.errors.oxygenLevel)}
-						helperText={formik.touched.oxygenLevel && formik.errors.oxygenLevel}
-					/>
-				</Grid>
-				<Grid item>
-					<Button variant="contained" type="submit" disabled={formik.isSubmitting}>
-						Submit
-					</Button>
-				</Grid>
-			</Grid>
-		</form>
+			</form>
+		</PageWrapper>
 	);
 };
 
