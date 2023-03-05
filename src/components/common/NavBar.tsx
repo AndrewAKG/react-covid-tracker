@@ -13,8 +13,8 @@ const publicPages = [
 
 const privatePages = [
 	{
-		name: 'Input',
-		route: 'data-input'
+		name: 'Vitals',
+		route: 'vitals'
 	},
 	{
 		name: 'Profile',

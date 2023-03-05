@@ -9,6 +9,8 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { usersAuth0ApiUrl } from '../config';
+import { useLocation } from '../contexts/Location.context';
+import { getAddressFromCoords } from '../utils/Maps';
 
 const Profile = () => {
 	const { user, getAccessTokenSilently, isLoading } = useAuth0();
@@ -16,6 +18,11 @@ const Profile = () => {
 
 	const [name, setName] = useState('');
 	const [isNameInEditMode, setIsNameInEditMode] = useState(false);
+
+	const [address, setAddress] = useState('');
+	const [isAddressLoading, setIsAddressLoading] = useState(true);
+
+	const { latitude, longitude } = useLocation();
 
 	const handleNameEdit = async () => {
 		try {
@@ -36,6 +43,29 @@ const Profile = () => {
 			console.log(e.message);
 		}
 	};
+
+	useEffect(() => {
+		const getUserAddress = async () => {
+			try {
+				if (latitude && longitude) {
+					const userAddress = await getAddressFromCoords(
+						latitude,
+						longitude
+					);
+					setAddress(userAddress);
+				}
+				else {
+					setAddress('please enable location to get address');
+				}
+
+				setIsAddressLoading(false);
+			} catch (e) {
+				console.log(e);
+			}
+		};
+
+		getUserAddress();
+	}, [latitude, longitude]);
 
 	useEffect(() => {
 		const getUserMetadata = async () => {
@@ -62,9 +92,9 @@ const Profile = () => {
 	}, [getAccessTokenSilently, user?.sub]);
 
 	return (
-		<Grid container spacing={3} flexDirection="column">
+		<Grid container spacing={3}>
 			{!isNameInEditMode ? (
-				<Grid item>
+				<Grid item xs={12}>
 					<TextField
 						fullWidth
 						label={'Name'}
@@ -92,7 +122,7 @@ const Profile = () => {
 					/>
 				</Grid>
 			) : (
-				<Grid item>
+				<Grid item xs={12}>
 					<TextField
 						fullWidth
 						autoFocus
@@ -115,13 +145,29 @@ const Profile = () => {
 					/>
 				</Grid>
 			)}
-			<Grid item>
+			<Grid item xs={12}>
 				<TextField
 					fullWidth
 					label={'Email'}
 					value={user?.email}
 					InputProps={{
 						readOnly: true
+					}}
+					disabled={true}
+				/>
+			</Grid>
+			<Grid item xs={12}>
+				<TextField
+					fullWidth
+					value={address}
+					label={'address'}
+					InputProps={{
+						readOnly: true,
+						endAdornment: isAddressLoading ? (
+							<InputAdornment position="end">
+								<CircularProgress size={20} />
+							</InputAdornment>
+						) : null
 					}}
 					disabled={true}
 				/>
