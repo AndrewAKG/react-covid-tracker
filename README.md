@@ -1,9 +1,13 @@
 # Covidoo
 
-## Deployed Link
+## Deployment
+Deployment is done using AWS Amplify
+
+### Deployed Link
 [https://main.d3u6ogtgfvh5xe.amplifyapp.com](https://main.d3u6ogtgfvh5xe.amplifyapp.com)
 
 ## Features
+
 ### Authentication
 Authentication is done using Auth0 with ability to login, signup or logout
 ### Dashboard
