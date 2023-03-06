@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
-import { Save } from '@mui/icons-material';
 import {
+	Button,
 	CircularProgress,
 	Divider,
 	Grid,
-	IconButton,
 	InputAdornment,
 	TextField
 } from '@mui/material';
@@ -13,31 +11,44 @@ import { PageWrapper } from '../components';
 import { usersAuth0ApiUrl } from '../config';
 import { useLocation } from '../contexts/Location.context';
 import { getAddressFromCoords } from '../utils/Maps';
+import { useSnackbar } from 'notistack';
+import { useAuth } from '../contexts/Auth.context';
 
 const Profile = () => {
-	const { user, getAccessTokenSilently } = useAuth0();
-
 	const [name, setName] = useState('');
 	const [address, setAddress] = useState('');
 	const [isAddressLoading, setIsAddressLoading] = useState(true);
 
 	const { latitude, longitude } = useLocation();
+	const { accessToken, user } = useAuth();
+	const { enqueueSnackbar } = useSnackbar();
 
 	const handleNameEdit = async () => {
-		try {
-			const accessToken = await getAccessTokenSilently();
+		const userDetailsByIdUrl = `${usersAuth0ApiUrl}/${user?.sub}`;
+		const response = await fetch(userDetailsByIdUrl, {
+			method: 'PATCH',
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ user_metadata: { name } })
+		});
 
-			const userDetailsByIdUrl = `${usersAuth0ApiUrl}/${user?.sub}`;
-			await fetch(userDetailsByIdUrl, {
-				method: 'PATCH',
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ user_metadata: { name } })
+		if (response.ok) {
+			enqueueSnackbar('Profile updated successfully', {
+				variant: 'success',
+				autoHideDuration: 4000
 			});
-		} catch (e: any) {
-			console.log(e.message);
+		} else {
+			const responseBody = await response.json();
+			enqueueSnackbar(
+				responseBody.message ||
+					'Error updating profile, please try again later',
+				{
+					variant: 'error',
+					autoHideDuration: 4000
+				}
+			);
 		}
 	};
 
@@ -65,27 +76,33 @@ const Profile = () => {
 
 	useEffect(() => {
 		const getUserMetadata = async () => {
-			try {
-				const accessToken = await getAccessTokenSilently();
+			const userDetailsByIdUrl = `${usersAuth0ApiUrl}/${user?.sub}`;
+			const metadataResponse = await fetch(userDetailsByIdUrl, {
+				headers: {
+					Authorization: `Bearer ${accessToken}`
+				}
+			});
 
-				const userDetailsByIdUrl = `${usersAuth0ApiUrl}/${user?.sub}`;
-				const metadataResponse = await fetch(userDetailsByIdUrl, {
-					headers: {
-						Authorization: `Bearer ${accessToken}`
-					}
-				});
-
+			if (metadataResponse.ok) {
 				const userDetails = await metadataResponse.json();
 				if (userDetails.user_metadata?.name) {
 					setName(userDetails.user_metadata.name);
 				}
-			} catch (e: any) {
-				console.log(e.message);
+			} else {
+				const responseBody = await metadataResponse.json();
+				enqueueSnackbar(
+					responseBody.message ||
+						'Error getting profile, please try again later',
+					{
+						variant: 'error',
+						autoHideDuration: 4000
+					}
+				);
 			}
 		};
 
 		getUserMetadata();
-	}, [getAccessTokenSilently, user?.sub]);
+	}, [accessToken, user?.sub, enqueueSnackbar]);
 
 	return (
 		<PageWrapper>
@@ -96,19 +113,6 @@ const Profile = () => {
 						label={'Name'}
 						value={name}
 						onChange={(event) => setName(event.target.value)}
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="end">
-									<IconButton
-										aria-label="toggle name to be editable"
-										onClick={handleNameEdit}
-										edge="end"
-									>
-										<Save />
-									</IconButton>
-								</InputAdornment>
-							)
-						}}
 					/>
 				</Grid>
 				<Grid item xs={12}>
@@ -137,6 +141,11 @@ const Profile = () => {
 						}}
 						disabled={true}
 					/>
+				</Grid>
+				<Grid item xs={12} container justifyContent={'flex-end'}>
+					<Button variant="contained" onClick={handleNameEdit}>
+						Save
+					</Button>
 				</Grid>
 				<Grid item xs={12}>
 					<Divider />

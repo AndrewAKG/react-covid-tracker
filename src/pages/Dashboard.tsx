@@ -2,28 +2,45 @@ import { useEffect, useState } from 'react';
 import { PageLoader, GoogleMap, Marker } from '../components';
 import { apiUrl } from '../config';
 import { GetAllUsersDataResponse, UserData } from '../types';
+import { useSnackbar } from 'notistack';
 
 const Dashboard = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [usersData, setUsersData] = useState<UserData[]>([]);
 
+	const { enqueueSnackbar } = useSnackbar();
+
 	useEffect(() => {
 		const getAllUsersData = async () => {
-			try {
-				const usersDataResponse = await fetch(`${apiUrl}/users-data`);
-				if (usersDataResponse.ok) {
-					const usersData: GetAllUsersDataResponse =
-						await usersDataResponse.json();
-					setUsersData(usersData.data);
+			const usersDataResponse = await fetch(`${apiUrl}/users-data`);
+			if (usersDataResponse.ok) {
+				const usersData: GetAllUsersDataResponse =
+					await usersDataResponse.json();
+				setUsersData(usersData.data);
+			} else {
+				let message;
+				switch (usersDataResponse.status) {
+					case 404: {
+						message = 'No data found to display';
+						break;
+					}
+					default: {
+						message =
+							'Error trying to fetch users data, please try again later';
+						break;
+					}
 				}
-				setIsLoading(false);
-			} catch (e) {
-				console.log('data error', e);
+				enqueueSnackbar(message, {
+					variant: 'error',
+					autoHideDuration: 4000
+				});
 			}
+
+			setIsLoading(false);
 		};
 
 		getAllUsersData();
-	}, []);
+	}, [enqueueSnackbar]);
 
 	if (isLoading) {
 		return <PageLoader />;

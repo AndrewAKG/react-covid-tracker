@@ -23,3 +23,7 @@ export interface AddUserDataRequest {
 	temperature: number;
 	oxygenLevel: number;
 }
+
+export interface AddUserDataResponse {
+	data: UserData;
+}

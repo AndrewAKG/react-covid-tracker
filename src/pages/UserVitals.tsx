@@ -1,4 +1,3 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import {
 	Button,
 	Divider,
@@ -14,49 +13,67 @@ import { PageWrapper } from '../components';
 import { useEffect, useState } from 'react';
 import {
 	AddUserDataRequest,
+	AddUserDataResponse,
 	GetUserVitalsHistoryResponse,
 	UserData
 } from '../types';
 import { LineChart } from '../components/common/LineChart';
 import moment from 'moment';
+import { useAuth } from '../contexts/Auth.context';
+import { useSnackbar } from 'notistack';
 
 const UserVitals = () => {
-	const { getAccessTokenSilently } = useAuth0();
+	const { accessToken } = useAuth();
 	const { latitude, longitude } = useLocation();
+	const { enqueueSnackbar } = useSnackbar();
+
 	const [userHistory, setUserHistory] = useState<UserData[]>([]);
 
 	const handleSubmitUserVitals = async (
 		values: { temperature: string; oxygenLevel: string },
 		{ resetForm }: { resetForm: Function }
 	) => {
-		try {
-			const accessToken = await getAccessTokenSilently();
-			const body: AddUserDataRequest = {
-				latitude: latitude!,
-				longitude: longitude!,
-				temperature: Number(values.temperature),
-				oxygenLevel: Number(values.oxygenLevel)
-			};
-			const response = await fetch(`${apiUrl}/users-data`, {
-				method: 'POST',
-				body: JSON.stringify(body),
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-					'Content-Type': 'application/json'
-				}
+		const body: AddUserDataRequest = {
+			latitude: latitude!,
+			longitude: longitude!,
+			temperature: Number(values.temperature),
+			oxygenLevel: Number(values.oxygenLevel)
+		};
+		const response = await fetch(`${apiUrl}/users-data`, {
+			method: 'POST',
+			body: JSON.stringify(body),
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+				'Content-Type': 'application/json'
+			}
+		});
+
+		if (response.ok) {
+			resetForm();
+			enqueueSnackbar('Vitals submitted successfully', {
+				variant: 'success',
+				autoHideDuration: 4000
 			});
 
-			if (response.ok) {
-				resetForm();
-			}
-		} catch (e) {
-			console.log(e);
+			// update history
+			const responseBody: AddUserDataResponse = await response.json();
+			const newHistoryRecord = responseBody.data;
+			setUserHistory([...userHistory, newHistoryRecord]);
+		} else {
+			const responseBody = await response.json();
+			enqueueSnackbar(
+				responseBody.message ||
+					'Error submitting vitals, please try again later',
+				{
+					variant: 'error',
+					autoHideDuration: 4000
+				}
+			);
 		}
 	};
 
 	useEffect(() => {
 		const getUserVitalsHistory = async () => {
-			const accessToken = await getAccessTokenSilently();
 			const response = await fetch(`${apiUrl}/users-data/history`, {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
@@ -68,11 +85,31 @@ const UserVitals = () => {
 				const userVitalsHistory: GetUserVitalsHistoryResponse =
 					await response.json();
 				setUserHistory(userVitalsHistory.data);
+			} else {
+				switch (response.status) {
+					case 404: {
+						enqueueSnackbar('No vitals history found to display', {
+							variant: 'warning',
+							autoHideDuration: 4000
+						});
+						break;
+					}
+					default: {
+						enqueueSnackbar(
+							'Error getting vitals history, please try again later',
+							{
+								variant: 'error',
+								autoHideDuration: 4000
+							}
+						);
+						break;
+					}
+				}
 			}
 		};
 
 		getUserVitalsHistory();
-	}, [getAccessTokenSilently]);
+	}, [accessToken, enqueueSnackbar]);
 
 	const formik = useFormik({
 		initialValues: {
@@ -137,7 +174,7 @@ const UserVitals = () => {
 							}
 						/>
 					</Grid>
-					<Grid item>
+					<Grid item xs={12} container justifyContent={'flex-end'}>
 						<Button
 							variant="contained"
 							type="submit"
@@ -152,7 +189,7 @@ const UserVitals = () => {
 				</Grid>
 			</form>
 
-			{userHistory.length && (
+			{userHistory.length > 0 && (
 				<Grid container spacing={3}>
 					<Grid item xs={12}>
 						<LineChart

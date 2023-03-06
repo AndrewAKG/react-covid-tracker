@@ -8,6 +8,7 @@ import theme from './theme';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0ProviderWithNavigate } from './components/auth/Auth0ProviderWithNavigate';
+import { SnackbarProvider } from 'notistack';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
@@ -17,11 +18,14 @@ root.render(
 	<ThemeProvider theme={theme}>
 		{/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
 		<CssBaseline />
-		<BrowserRouter>
-			<Auth0ProviderWithNavigate>
-				<App />
-			</Auth0ProviderWithNavigate>
-		</BrowserRouter>
+
+		<SnackbarProvider>
+			<BrowserRouter>
+				<Auth0ProviderWithNavigate>
+					<App />
+				</Auth0ProviderWithNavigate>
+			</BrowserRouter>
+		</SnackbarProvider>
 	</ThemeProvider>
 );
 
