@@ -24,7 +24,8 @@ app detects user lcoation automatically from the browser and use it to save data
 - handle if user goes offline
 - add proper unit tests
 - minor code refactors
-- regions grouping in maps and some styling
+- update google api to cover more regions in the map
+- regions patients numbers grouping in maps and some styling
 
 ## Available Scripts
 
