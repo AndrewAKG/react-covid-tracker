@@ -43,7 +43,7 @@ const Profile = () => {
 			const responseBody = await response.json();
 			enqueueSnackbar(
 				responseBody.message ||
-					'Error updating profile, please try again later',
+				'Error updating profile, please try again later',
 				{
 					variant: 'error',
 					autoHideDuration: 4000
@@ -76,28 +76,30 @@ const Profile = () => {
 
 	useEffect(() => {
 		const getUserMetadata = async () => {
-			const userDetailsByIdUrl = `${usersAuth0ApiUrl}/${user?.sub}`;
-			const metadataResponse = await fetch(userDetailsByIdUrl, {
-				headers: {
-					Authorization: `Bearer ${accessToken}`
-				}
-			});
-
-			if (metadataResponse.ok) {
-				const userDetails = await metadataResponse.json();
-				if (userDetails.user_metadata?.name) {
-					setName(userDetails.user_metadata.name);
-				}
-			} else {
-				const responseBody = await metadataResponse.json();
-				enqueueSnackbar(
-					responseBody.message ||
-						'Error getting profile, please try again later',
-					{
-						variant: 'error',
-						autoHideDuration: 4000
+			if (accessToken) {
+				const userDetailsByIdUrl = `${usersAuth0ApiUrl}/${user?.sub}`;
+				const metadataResponse = await fetch(userDetailsByIdUrl, {
+					headers: {
+						Authorization: `Bearer ${accessToken}`
 					}
-				);
+				});
+
+				if (metadataResponse.ok) {
+					const userDetails = await metadataResponse.json();
+					if (userDetails.user_metadata?.name) {
+						setName(userDetails.user_metadata.name);
+					}
+				} else {
+					const responseBody = await metadataResponse.json();
+					enqueueSnackbar(
+						responseBody.message ||
+						'Error getting profile, please try again later',
+						{
+							variant: 'error',
+							autoHideDuration: 4000
+						}
+					);
+				}
 			}
 		};
 
