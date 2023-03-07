@@ -63,7 +63,7 @@ const UserVitals = () => {
 			const responseBody = await response.json();
 			enqueueSnackbar(
 				responseBody.message ||
-					'Error submitting vitals, please try again later',
+				'Error submitting vitals, please try again later',
 				{
 					variant: 'error',
 					autoHideDuration: 4000
@@ -189,7 +189,7 @@ const UserVitals = () => {
 				</Grid>
 			</form>
 
-			{userHistory.length > 0 && (
+			{userHistory?.length > 0 && (
 				<Grid container spacing={3}>
 					<Grid item xs={12}>
 						<LineChart
