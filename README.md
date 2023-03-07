@@ -24,6 +24,7 @@ app detects user lcoation automatically from the browser and use it to save data
 - handle if user goes offline
 - add proper unit tests
 - minor code refactors
+- regions grouping in maps and some styling
 
 ## Available Scripts
 
