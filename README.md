@@ -19,6 +19,11 @@ user can edit his name and see his email, address
 ### location
 app detects user lcoation automatically from the browser and use it to save data
 
+## Possible Enhancements
+- handle if user doesn't permit location access
+- handle if user goes offline
+- add proper unit tests
+
 ## Available Scripts
 
 In the project directory, you can run:
