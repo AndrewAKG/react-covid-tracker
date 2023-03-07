@@ -23,6 +23,7 @@ app detects user lcoation automatically from the browser and use it to save data
 - handle if user doesn't permit location access
 - handle if user goes offline
 - add proper unit tests
+- minor code refactors
 
 ## Available Scripts
 

@@ -18,22 +18,22 @@ const Dashboard = () => {
 					await usersDataResponse.json();
 				setUsersData(usersData.data);
 			} else {
-				let message;
 				switch (usersDataResponse.status) {
 					case 404: {
-						message = 'No data found to display';
+						enqueueSnackbar('No patients data found to display', {
+							variant: 'warning',
+							autoHideDuration: 4000
+						});
 						break;
 					}
 					default: {
-						message =
-							'Error trying to fetch users data, please try again later';
+						enqueueSnackbar('Error trying to fetch patients data, please try again later', {
+							variant: 'warning',
+							autoHideDuration: 4000
+						});
 						break;
 					}
 				}
-				enqueueSnackbar(message, {
-					variant: 'error',
-					autoHideDuration: 4000
-				});
 			}
 
 			setIsLoading(false);
@@ -54,7 +54,7 @@ const Dashboard = () => {
 				lng: 31.2357
 			}}
 			yesIWantToUseGoogleMapApiInternals
-			// onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, places)}
+		// onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, places)}
 		>
 			{usersData.map((item) => {
 				return (
