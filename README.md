@@ -1,7 +1,7 @@
 # Covidoo
 
 ## Deployment
-Deployment is done using AWS Amplify
+Deployment is done using [AWS Amplify](https://aws.amazon.com/amplify)
 
 ### Deployed Link
 [https://main.d3u6ogtgfvh5xe.amplifyapp.com](https://main.d3u6ogtgfvh5xe.amplifyapp.com)
@@ -10,7 +10,7 @@ Deployment is done using AWS Amplify
 
 ### Authentication
 Authentication is done using Auth0 with ability to login, signup or logout
-### Dashboard
+### Map Dashboard
 user can see a map full of other users data with their location and temperature
 ### Vitals
 user can enter his vitals at any time to reflect on dashboard map and to be added to his vitals history charts
@@ -30,11 +30,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn build`
 
