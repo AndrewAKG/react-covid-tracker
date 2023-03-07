@@ -26,6 +26,7 @@ app detects user lcoation automatically from the browser and use it to save data
 - minor code refactors
 - update google api to cover more regions in the map
 - regions patients numbers grouping in maps and some styling
+- mobile support
 
 ## Available Scripts
 
