@@ -3,7 +3,7 @@
 ## Deployment
 Deployment is done using [AWS Amplify](https://aws.amazon.com/amplify)
 
-### Deployed Link
+### Example Deployed Link
 [https://main.d3u6ogtgfvh5xe.amplifyapp.com](https://main.d3u6ogtgfvh5xe.amplifyapp.com)
 
 ## Features
